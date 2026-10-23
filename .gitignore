@@ -19,3 +19,6 @@ Thumbs.db
 # Logs & temporary run files
 outputs/logs/
 *.log
+
+# Raw datasets & symlinks
+data/raw/
