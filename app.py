@@ -206,7 +206,7 @@ def main():
     # Render Application Header
     st.markdown("""
     <div class="header-container">
-        <div class="header-title">Real-Timex Audio Deepfake Detection</div>
+        <div class="header-title">Real-Time Audio Deepfake Detection</div>
         <div class="header-subtitle">
             🎙️ Multi-Feature Deep Learning Framework utilizing Linear Frequency and Constant-Q Cepstral representations fused with Wav2Vec 2.0.
         </div>
@@ -268,41 +268,39 @@ def main():
     input_source = None
     
     with col1:
-        st.markdown('<div class="custom-card">', unsafe_allow_html=True)
-        st.markdown("### 📂 Upload Audio File")
-        uploaded_file = st.file_uploader("Select a WAV or MP3 audio file", type=["wav", "mp3"])
-        if uploaded_file is not None:
-            # Save uploaded bytes to temp file
-            temp_dir = tempfile.gettempdir()
-            temp_file_path = os.path.join(temp_dir, uploaded_file.name)
-            with open(temp_file_path, "wb") as f:
-                f.write(uploaded_file.read())
-            audio_path = temp_file_path
-            input_source = uploaded_file.name
-        st.markdown('</div>', unsafe_allow_html=True)
+        with st.container(border=True):
+            st.markdown("### 📂 Upload Audio File")
+            uploaded_file = st.file_uploader("Select a WAV or MP3 audio file", type=["wav", "mp3"])
+            if uploaded_file is not None:
+                # Save uploaded bytes to temp file
+                temp_dir = tempfile.gettempdir()
+                temp_file_path = os.path.join(temp_dir, uploaded_file.name)
+                with open(temp_file_path, "wb") as f:
+                    f.write(uploaded_file.read())
+                audio_path = temp_file_path
+                input_source = uploaded_file.name
         
     with col2:
-        st.markdown('<div class="custom-card">', unsafe_allow_html=True)
-        st.markdown("### 🎤 Record via Microphone")
-        st.markdown("Click the recorder widget below and speak (up to 5 seconds):")
-        
-        # Audio recorder component
-        recorded_audio_bytes = audio_recorder(
-            text="Click to start / stop recording",
-            recording_color="#ef4444",
-            neutral_color="#6366f1",
-            icon_size="2x"
-        )
-        
-        if recorded_audio_bytes is not None:
-            # Save recorded bytes to temp file
-            temp_file_path = os.path.join(tempfile.gettempdir(), "mic_recording.wav")
-            with open(temp_file_path, "wb") as f:
-                f.write(recorded_audio_bytes)
-            audio_path = temp_file_path
-            input_source = f"Microphone_Record_{datetime.now().strftime('%H%M%S')}.wav"
-            st.audio(recorded_audio_bytes, format="audio/wav")
-        st.markdown('</div>', unsafe_allow_html=True)
+        with st.container(border=True):
+            st.markdown("### 🎤 Record via Microphone")
+            st.markdown("Click the recorder widget below and speak (up to 5 seconds):")
+            
+            # Audio recorder component
+            recorded_audio_bytes = audio_recorder(
+                text="Click to start / stop recording",
+                recording_color="#ef4444",
+                neutral_color="#6366f1",
+                icon_size="2x"
+            )
+            
+            if recorded_audio_bytes is not None:
+                # Save recorded bytes to temp file
+                temp_file_path = os.path.join(tempfile.gettempdir(), "mic_recording.wav")
+                with open(temp_file_path, "wb") as f:
+                    f.write(recorded_audio_bytes)
+                audio_path = temp_file_path
+                input_source = f"Microphone_Record_{datetime.now().strftime('%H%M%S')}.wav"
+                st.audio(recorded_audio_bytes, format="audio/wav")
         
     if audio_path is not None:
         # Run prediction button
