@@ -1,0 +1,70 @@
+# Generalized Deepfake Audio Detection Configuration
+
+paths:
+  raw_dataset_dir: "data/raw/dataset"
+  processed_dir: "data/processed"
+  checkpoint_dir: "outputs/checkpoints"
+  log_dir: "outputs/logs"
+
+audio:
+  sample_rate: 16000
+  duration: 4.0  # seconds
+  mono: true
+  trim_silence: true
+  trim_db: 30
+  max_time_steps: 400
+
+features:
+  lfcc:
+    n_lfcc: 40
+    n_fft: 512
+    hop_length: 160
+  cqcc:
+    n_bins: 96
+    bins_per_octave: 24
+    hop_length: 160
+
+model:
+  device: "auto"  # "auto", "cuda", "mps", "cpu"
+  resnet:
+    num_classes: 2
+    dropout: 0.3
+  ssl:
+    model_name: "Vansh180/deepfake-audio-wav2vec2"
+    fine_tune: true
+  classifier:
+    hidden_dim: 256
+    dropout: 0.5
+
+training:
+  batch_size: 8
+  epochs: 35
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  early_stopping_patience: 15
+  seed: 42
+  mixed_precision: true
+
+augmentations:
+  enabled: true
+  noise:
+    enabled: true
+    min_snr_db: 15
+    max_snr_db: 30
+  reverb:
+    enabled: true
+    min_delay_ms: 5
+    max_delay_ms: 30
+    decay: 0.4
+  mp3_simulation:
+    enabled: true
+    min_kbps: 32
+    max_kbps: 128
+  pitch_shift:
+    enabled: true
+    max_steps: 2.0
+  time_stretch:
+    enabled: true
+    min_rate: 0.9
+    max_rate: 1.1
+

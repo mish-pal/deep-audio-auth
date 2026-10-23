@@ -1,0 +1,17 @@
+torch
+torchaudio
+torchvision
+librosa
+streamlit
+numpy
+scipy
+soundfile
+audio-recorder-streamlit
+pyyaml
+pandas
+scikit-learn
+transformers
+tqdm
+matplotlib
+seaborn
+tensorboard
